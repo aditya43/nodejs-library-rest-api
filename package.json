@@ -1,0 +1,39 @@
+{
+    "name": "library_rest_api",
+    "version": "1.0.0",
+    "description": "Library REST API",
+    "repository": {
+        "type" : "git",
+        "url" : "https://github.com/aditya43/nodejs-library-rest-api"
+    },
+    "main": "src/index.js",
+    "scripts": {
+        "start": "NODE_ENV=prod node src/index.js",
+        "dev": "NODE_ENV=dev nodemon src/index.js",
+        "test": "NODE_ENV=test jest --watch --runInBand"
+    },
+    "jest": {
+        "verbose": true,
+        "testEnvironment": "node"
+    },
+    "keywords": ["library", "rest", "api"],
+    "author": "Aditya Hajare",
+    "license": "ISC",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.19.0",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "helmet": "^3.21.2",
+        "jsonwebtoken": "^8.5.1",
+        "mongodb": "^3.4.1",
+        "mongoose": "^5.8.3",
+        "morgan": "^1.9.1",
+        "validator": "^12.1.0"
+    },
+    "devDependencies": {
+        "jest": "^24.9.0",
+        "nodemon": "^2.0.2",
+        "supertest": "^4.0.2"
+    }
+}

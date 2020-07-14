@@ -1,0 +1,49 @@
+version: '3.3'
+
+services:
+  nodejs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nodejs
+    container_name: nodejs
+    restart: unless-stopped
+    environment:
+      - MONGO_USERNAME=aditya
+      - MONGO_PASSWORD=adi123
+      - MONGO_HOSTNAME=db
+      - MONGO_PORT=27017
+      - MONGO_DB=library_rest_api
+    ports:
+      - "3000:8080"
+    volumes:
+      - .:/usr/src/app
+      - node_modules:/usr/src/app/node_modules
+    networks:
+      - app-network
+    # command: "./wait-for.sh db:27017 -- npm run dev"
+    command: "npm run dev"
+    depends_on:
+      - db
+
+  db:
+    image: mongo:latest
+    container_name: db
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=aditya
+      - MONGO_INITDB_ROOT_PASSWORD=adi123
+    volumes:
+      - dbdata:/data/db
+    networks:
+      - app-network
+    ports:
+      - "27099:27017"
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  node_modules:
