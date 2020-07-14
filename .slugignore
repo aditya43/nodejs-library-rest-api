@@ -1,0 +1,6 @@
+.dockerignore
+docker-compose.yml
+Dockerfile
+wait-for.sh
+env/*.*
+dbdata/*.*
