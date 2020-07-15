@@ -153,3 +153,22 @@ exports.search = async (req, res) => {
         res.status(500).send(e);
     }
 };
+
+/**
+ * Get book by id
+ */
+exports.get = async (req, res) => {
+    try {
+        const book = await Book.findOne({
+            _id: req.params.id
+        }).populate('author');
+
+        if (!book) {
+            res.status(404).send({ error: 'Book not found!' });
+        }
+
+        res.status(200).send(book);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+};
