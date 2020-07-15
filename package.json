@@ -3,8 +3,8 @@
     "version": "1.0.0",
     "description": "Library REST API",
     "repository": {
-        "type" : "git",
-        "url" : "https://github.com/aditya43/nodejs-library-rest-api"
+        "type": "git",
+        "url": "https://github.com/aditya43/nodejs-library-rest-api"
     },
     "main": "src/index.js",
     "scripts": {
@@ -16,7 +16,11 @@
         "verbose": true,
         "testEnvironment": "node"
     },
-    "keywords": ["library", "rest", "api"],
+    "keywords": [
+        "library",
+        "rest",
+        "api"
+    ],
     "author": "Aditya Hajare",
     "license": "ISC",
     "dependencies": {

@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3'
 
 services:
   nodejs:
@@ -27,7 +27,7 @@ services:
       - db
 
   db:
-    image: mongo:latest
+    image: mongo
     container_name: db
     restart: unless-stopped
     environment:
