@@ -101,6 +101,15 @@ authorSchema.statics.findByCredentials = async (email, password) => {
     return author;
 };
 
+// Hash the plain text password before saving.
+authorSchema.pre('save', async function (next) { // Using standard function since arrow functions don't bind 'this'.
+    if (this.isModified('password')) {
+        this.password = await bcrypt.hash(this.password, 8);
+    }
+
+    next(); // If we don't call 'next()' code will hang here forever and author won't be saved.
+});
+
 const Author = mongoose.model('Author', authorSchema);
 
 module.exports = Author;
