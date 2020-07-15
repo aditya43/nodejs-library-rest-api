@@ -70,3 +70,11 @@ test('should not login nonexistent author', async () => {
         })
         .expect(400);
 });
+
+test('should get profile for the logged in author', async () => {
+    await request(app)
+        .get('/authors/me')
+        .set('Authorization', `Bearer ${authorOne.tokens[0].token}`)
+        .send()
+        .expect(200);
+});
