@@ -119,3 +119,17 @@ test('should not delete account for the unauthenticated author', async () => {
         .send()
         .expect(401);
 });
+
+test('should update valid author fields', async () => {
+    await request(app)
+        .patch('/authors/me')
+        .set('Authorization', `Bearer ${authorOne.tokens[0].token}`)
+        .send({
+            name: 'John Doe'
+        })
+        .expect(200);
+
+    // Assert that the updated author name is stored in database.
+    const author = await Author.findById(authorOneId);
+    expect(author.name).toEqual('John Doe');
+});
