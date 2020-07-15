@@ -110,6 +110,12 @@ authorSchema.pre('save', async function (next) { // Using standard function sinc
     next(); // If we don't call 'next()' code will hang here forever and author won't be saved.
 });
 
+// Remove all books owned by author before deleting author account
+authorSchema.pre('remove', async function (next) {
+    await Book.deleteMany({ author: this._id });
+    next();
+});
+
 const Author = mongoose.model('Author', authorSchema);
 
 module.exports = Author;
