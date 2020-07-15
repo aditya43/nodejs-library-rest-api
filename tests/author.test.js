@@ -133,3 +133,13 @@ test('should update valid author fields', async () => {
     const author = await Author.findById(authorOneId);
     expect(author.name).toEqual('John Doe');
 });
+
+test('should not update invalid author fields', async () => {
+    await request(app)
+        .patch('/authors/me')
+        .set('Authorization', `Bearer ${authorOne.tokens[0].token}`)
+        .send({
+            location: 'Pune'
+        })
+        .expect(400);
+});
