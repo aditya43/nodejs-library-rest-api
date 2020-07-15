@@ -100,3 +100,15 @@ test('should not get books for the unauthenticated request', async () => {
         .send()
         .expect(401);
 });
+
+test('should delete account for author', async () => {
+    await request(app)
+        .delete('/authors/me')
+        .set('Authorization', `Bearer ${authorOne.tokens[0].token}`)
+        .send()
+        .expect(200);
+
+    // Assert that the author is deleted from database.
+    const author = await Author.findById(authorOneId);
+    expect(author).toBeNull();
+});
