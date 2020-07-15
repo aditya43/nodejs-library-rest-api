@@ -15,7 +15,7 @@ const bookSchema = new mongoose.Schema({
                 throw new Error('ISBN must be positive number');
             }
 
-            if (!value.isLength({ min: 9, max: 11 })) {
+            if (!validator.isLength(value, { min: 9, max: 11 })) {
                 throw new Error('ISBN number must be 9 to 11 digits long');
             }
         }
