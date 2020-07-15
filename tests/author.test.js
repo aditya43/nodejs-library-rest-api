@@ -143,3 +143,17 @@ test('should not update invalid author fields', async () => {
         })
         .expect(400);
 });
+
+test('should search and return valid authors', async () => {
+    const response = await request(app)
+        .post('/authors/search')
+        .set('Authorization', `Bearer ${authorOne.tokens[0].token}`)
+        .send({
+            name: 'aDiTyA',
+            limit: 1
+        })
+        .expect(200);
+
+    expect(response.body.length).toBe(1);
+    expect(response.body[0].email).toBe('aditya@hajare.com');
+});
