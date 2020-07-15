@@ -20,3 +20,29 @@ test('should not allow password to contain word password', async () => {
         })
         .expect(400);
 });
+
+test('should signup a new author', async () => {
+    const response = await request(app)
+        .post('/authors')
+        .send({
+            name: 'Aditya Hajare',
+            email: 'aditya.hajare@libraryapp.com',
+            password: 'aditya123!'
+        })
+        .expect(201);
+
+    // Assert that the database was changed correctly.
+    const author = await Author.findById(response.body.author._id);
+    expect(author).not.toBeNull();
+
+    // Assertion about the response.
+    expect(response.body).toMatchObject({
+        author: {
+            name: 'Aditya Hajare',
+            email: 'aditya.hajare@libraryapp.com'
+        }
+    });
+
+    // Assert that the plain text password is not stored in database.
+    expect(author.password).not.toBe('aditya123!');
+});
