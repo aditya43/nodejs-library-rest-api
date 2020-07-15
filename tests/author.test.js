@@ -60,3 +60,13 @@ test('should login existing author', async () => {
     const author = await Author.findById(response.body.author._id);
     expect(response.body.jwtToken).toBe(author.tokens[1].token);
 });
+
+test('should not login nonexistent author', async () => {
+    await request(app)
+        .post('/authors/login')
+        .send({
+            email: 'author@example.com',
+            password: 'author123'
+        })
+        .expect(400);
+});
