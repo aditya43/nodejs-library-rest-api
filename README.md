@@ -1,6 +1,26 @@
 ## Library REST API
 Library REST API using Node, Express, MongoDB, Mongoose, Docker Containers.
 
+## How to setup on local machine (Without Docker)
+- You must have latest Node.js (13.x) and MongoDB installed on your local machine.
+- Edit both `/env/dev.env` and `/env/test.env` files and uncomment MongoDB connection string for running project without Docker. If required, specify access credentials in connection string.
+- Execute:
+    ```sh
+    npm run dev # To run project
+    npm run test # To run tests
+    ```
+
+## How to setup on local machine (Using Docker)
+- You must be having Docker installed and running on your machine. You can download and install it from here: [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
+- Download/Clone this repository:
+    ```sh
+    git clone git@github.com:aditya43/nodejs-library-rest-api.git
+    ```
+- Go to project root directory and execute following command:
+    ```sh
+    docker-compose up
+    ```
+
 ## API Documentations :rocket:
 > Documentations: https://documenter.getpostman.com/view/9919903/T17Q54cG?version=latest
 
