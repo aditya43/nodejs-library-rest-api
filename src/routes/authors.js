@@ -74,47 +74,6 @@ authorSchema.methods.generateJwtAuthToken = async function () {
     return token;
 };
 
-// To remove 'password' and 'tokens' data from 'author' object when returned.
-authorSchema.methods.toJSON = function () {
-    const author = this.toObject();
-
-    delete author.password;
-    delete author.tokens;
-
-    return author;
-};
-
-// statics = 'findByCredentials' method will be accessible for calling on 'Author' model itself.
-authorSchema.statics.findByCredentials = async (email, password) => {
-    const author = await Author.findOne({ email });
-
-    if (!author) {
-        throw new Error('Invalid credentials'); // Author not found for given email
-    }
-
-    const isPasswordMatch = await bcrypt.compare(password, author.password);
-
-    if (!isPasswordMatch) {
-        throw new Error('Invalid credentials'); // Password doesn't match
-    }
-
-    return author;
-};
-
-// Hash the plain text password before saving.
-authorSchema.pre('save', async function (next) { // Using standard function since arrow functions don't bind 'this'.
-    if (this.isModified('password')) {
-        this.password = await bcrypt.hash(this.password, 8);
-    }
-
-    next(); // If we don't call 'next()' code will hang here forever and author won't be saved.
-});
-
-authorSchema.pre('remove', async function (next) {
-    await Book.deleteMany({ author: this._id });
-    next();
-});
-
 const Author = mongoose.model('Author', authorSchema);
 
 module.exports = Author;
