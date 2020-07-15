@@ -18,51 +18,12 @@ exports.add = async (req, res) => {
 };
 
 /**
- * Author login
+ * Get currently logged in author's profile
  */
-exports.login = async (req, res) => {
+exports.myProfile = async (req, res) => {
     try {
-        const author = await Author.findByCredentials(req.body.email, req.body.password);
-        const jwtToken = await author.generateJwtAuthToken();
-
-        res.status(200).send({ author, jwtToken });
+        res.status(200).send(req.author);
     } catch (e) {
-        res.status(400).send({ error: 'Invalid credentials' });
-    }
-};
-
-/**
- * Logout author
- */
-exports.logout = async (req, res) => {
-    try {
-        req.author.tokens = req.author.tokens.filter(token => {
-            return token.token !== req.token;
-        });
-
-        await req.author.save();
-
-        res.status(200).send({
-            code: 200,
-            message: 'success'
-        });
-    } catch (error) {
-        res.status(500).send();
-    }
-};
-
-/**
- * Logout all sessions
- */
-exports.logoutAll = async (req, res) => {
-    try {
-        req.author.tokens = [];
-        await req.author.save();
-        res.status(200).send({
-            code: 200,
-            message: 'success'
-        });
-    } catch (error) {
-        res.status(500).send();
+        res.status(500).send(e);
     }
 };
