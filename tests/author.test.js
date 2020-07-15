@@ -85,3 +85,11 @@ test('should not get profile for the unauthenticated request', async () => {
         .send()
         .expect(401);
 });
+
+test('should get books for the logged in author', async () => {
+    await request(app)
+        .get('/authors/books')
+        .set('Authorization', `Bearer ${authorOne.tokens[0].token}`)
+        .send()
+        .expect(200);
+});
