@@ -208,3 +208,23 @@ exports.update = async (req, res) => {
         res.status(400).send(e);
     }
 };
+
+/**
+ * Delete book owned by currently logged in author
+ */
+exports.delete = async (req, res) => {
+    try {
+        const book = await Book.findOneAndDelete({
+            _id: req.params.id,
+            author: req.author._id
+        }).populate('author');
+
+        if (!book) {
+            res.status(400).send({ error: 'Book not found!' });
+        }
+
+        res.status(200).send(book);
+    } catch (e) {
+        res.status(400).send(e);
+    }
+};
