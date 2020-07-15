@@ -157,3 +157,10 @@ test('should search and return valid authors', async () => {
     expect(response.body.length).toBe(1);
     expect(response.body[0].email).toBe('aditya@hajare.com');
 });
+
+test('should get author by id', async () => {
+    await request(app)
+        .get(`/authors/${authorOneId}`)
+        .set('Authorization', `Bearer ${authorOne.tokens[0].token}`)
+        .expect(200);
+});
