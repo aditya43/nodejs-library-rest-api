@@ -5,7 +5,7 @@ const authMiddleware = require('../middleware/auth');
 const router = new express.Router();
 
 router.post('/books', authMiddleware, bookController.add);
-// router.post('/books/search', authMiddleware, bookController.search);
+router.post('/books/search', authMiddleware, bookController.search);
 
 // GET /books?limit=10&skip=10
 // GET /books?sortBy=createdAt:asc
