@@ -15,7 +15,7 @@ router.post('/books/search', authMiddleware, bookController.search);
 router.get('/books/me', authMiddleware, bookController.myBooks);
 
 router.get('/books/:id', authMiddleware, bookController.get);
-// router.patch('/books/:id', authMiddleware, bookController.update);
+router.patch('/books/:id', authMiddleware, bookController.update);
 // router.delete('/books/:id', authMiddleware, bookController.delete);
 
 module.exports = router;
