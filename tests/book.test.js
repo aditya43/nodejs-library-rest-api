@@ -26,3 +26,13 @@ test('should create book for author', async () => {
     const book = await Book.findById(response.body._id);
     expect(book).not.toBeNull();
 });
+
+test('should fetch author books', async () => {
+    const response = await request(app)
+        .get('/authors/books')
+        .set('Authorization', `Bearer ${authorOne.tokens[0].token}`)
+        .send()
+        .expect(200);
+
+    expect(response.body.length).toEqual(2);
+});
