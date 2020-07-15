@@ -36,3 +36,14 @@ test('should fetch author books', async () => {
 
     expect(response.body.length).toEqual(2);
 });
+
+test('should not delete other authors book', async () => {
+    request(app)
+        .delete(`/books/${bookOne._id}`)
+        .set('Authorization', `Bearer ${authorTwo.tokens[0].token}`)
+        .send()
+        .expect(404);
+
+    const book = await Book.findById(bookOne._id);
+    expect(book).not.toBeNull();
+});
