@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 const bookSchema = new mongoose.Schema({
     title: {
@@ -8,7 +9,16 @@ const bookSchema = new mongoose.Schema({
     },
     isbn: {
         type: Number,
-        required: true
+        required: true,
+        validate (value) {
+            if (value < 0) {
+                throw new Error('ISBN must be positive number');
+            }
+
+            if (!value.isLength({ min: 9, max: 11 })) {
+                throw new Error('ISBN number must be 9 to 11 digits long');
+            }
+        }
     },
     author: {
         type: mongoose.Schema.Types.ObjectId,
