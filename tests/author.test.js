@@ -112,3 +112,10 @@ test('should delete account for author', async () => {
     const author = await Author.findById(authorOneId);
     expect(author).toBeNull();
 });
+
+test('should not delete account for the unauthenticated author', async () => {
+    await request(app)
+        .delete('/authors/me')
+        .send()
+        .expect(401);
+});
