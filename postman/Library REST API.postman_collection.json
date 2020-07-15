@@ -1,0 +1,598 @@
+{
+	"info": {
+		"_postman_id": "0ccbff4a-a63b-4eed-a3e2-883b23b4a22d",
+		"name": "Library REST API",
+		"description": "Library REST API using Node, Express, MongoDB, Mongoose, Docker Containers.\n\n## Authors API\n\n|Request Type|Endpoint|Description|\n|------------|--------|-----------|\n|`POST`|`/authors`|Sign-up or create new author account.|\n|`GET`|`/authors/me`|Retrieve currently logged in author profile details.|\n|`GET`|`/authors/books`|Get books owned by currently logged in author.|\n|`GET`|`/authors/:id`|Retrieve author profile details by author id.|\n|`POST`|`/authors/login`|Sign-in or login to author account.|\n|`PATCH`|`/authors/me`|Update profile data for currently logged in author.|\n|`DELETE`|`/authors/me`|Delete currently logged-in author's account.|\n|`POST`|`/authors/search`|Search for authors based off their name, age and email.|\n|`POST`|`/authors/logout`|Logout currently signed-in author.|\n|`POST`|`/authors/logoutAll`|Logout or clear all login sessions for currently logged in author account.|\n\n## Books API\n\n|Request Type|Endpoint|Description|\n|------------|--------|-----------|\n|`POST`|`/books`|Create/Add new book.|\n|`POST`|`/books/search`|Search for books based off their title, isbn, author id, and releaseDate.|\n|`GET`|`/books/me`|Get books owned by currently logged in author.|\n|`GET`|`/books/:id`|Retrieve book by book id.|\n|`PATCH`|`/books/:id`|Update book details.|\n|`DELETE`|`/books/:id`|Delete book by book id.|",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authors",
+			"item": [
+				{
+					"name": "Create Author",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "31abf8ed-d224-43d2-8134-d0f7307cf5da",
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    pm.environment.set('JWT_TOKEN', pm.response.json().jwtToken)",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Aditya Hajare\",\n\t\"email\": \"aditya@hajare.com\",\n\t\"password\": \"adi1234567\",\n\t\"age\": 34\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/authors",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"authors"
+							]
+						},
+						"description": "## Sign-up or create new author account.\n\n|Field|Mandatory|Type|Example Value|Validations|\n|-----|---------|----|-------------|-----------|\n|name|yes|String|Aditya Hajare|Must be 1 to 30 Characters long|\n|email|yes|String|aditya@hajare.com|Must be unique and 1 to 30 Characters long |\n|password|yes|String|adi1234567|Should not contain word \"password\" and must be 1 to 30 characters long|\n|age|no|Number|34|Must be greater than 0|"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9d8f0d66-cb3b-4565-9142-69398aefaa92",
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    pm.environment.set('JWT_TOKEN', pm.response.json().jwtToken)",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"aditya@hajare.com\",\n\t\"password\": \"adi1234567\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/authors/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"authors",
+								"login"
+							]
+						},
+						"description": "## Sign-in or login to author account.\n\n|Field|Mandatory|Type|Example Value|\n|-----|---------|----|-------------|\n|email|yes|String|aditya@hajare.com|\n|password|yes|String|adi1234567|"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "988865ed-f4a2-4f43-8914-876dcf235678",
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    pm.environment.set('JWT_TOKEN', '')",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/authors/logout",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"authors",
+								"logout"
+							]
+						},
+						"description": "## Logout currently signed-in author."
+					},
+					"response": []
+				},
+				{
+					"name": "Logout All Devices",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "33c655af-2900-4775-a6e0-43bad5d8d86f",
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    pm.environment.set('JWT_TOKEN', '')",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/authors/logoutAll",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"authors",
+								"logoutAll"
+							]
+						},
+						"description": "## Logout or clear all login sessions for currently logged in author account."
+					},
+					"response": []
+				},
+				{
+					"name": "My Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/authors/me",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"authors",
+								"me"
+							]
+						},
+						"description": "## Retrieve currently logged in author profile details."
+					},
+					"response": []
+				},
+				{
+					"name": "My Books",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/authors/books",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"authors",
+								"books"
+							]
+						},
+						"description": "## Get books owned by currently logged in author."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Author By Id (Single)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/authors/5f0d8f1eb09f8f45be004c05",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"authors",
+								"5f0d8f1eb09f8f45be004c05"
+							]
+						},
+						"description": "## Retrieve author profile details by author id.\n\nEndpoint: `/authors/:id`\n\n|Field|Mandatory|Type|Description|\n|-----|---------|----|-----------|\n|:id|yes|Query String Param|Valid author id|"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Author",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Nishigandha\",\n\t\"email\": \"nishigandha@hajare.com\",\n\t\"age\": 28,\n\t\"password\": \"nishi123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/authors/me",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"authors",
+								"me"
+							]
+						},
+						"description": "## Update profile data for currently logged in author.\n\n|Field|Mandatory|Type|Example Value|Validations|\n|-----|---------|----|-------------|-----------|\n|name|no|String|Aditya Hajare|Must be 1 to 30 Characters long|\n|email|no|String|aditya@hajare.com|Must be unique and 1 to 30 Characters long |\n|password|no|String|adi1234567|Should not contain word \"password\" and must be 1 to 30 characters long|\n|age|no|Number|34|Must be greater than 0|"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Author",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/authors/me",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"authors",
+								"me"
+							]
+						},
+						"description": "## Delete currently logged-in author's account."
+					},
+					"response": []
+				},
+				{
+					"name": "Search Authors",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Adi\",\n\t\"age\": 34,\n\t\"email\": \"AdITyA@HaJARe.cOm\",\n\t\"limit\": 2,\n\t\"skip\": 2,\n\t\"sortBy\": \"name:asc\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/authors/search",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"authors",
+								"search"
+							]
+						},
+						"description": "## Search for authors based off their name, age and email.\n\n|Field|Mandatory|Type|Example Value|Validations|\n|-----|---------|----|-------------|-----------|\n|name|no|String|Aditya Hajare|Must be 1 to 30 Characters long|\n|email|no|String|aditya@hajare.com|Must be unique and 1 to 30 Characters long |\n|age|no|Number|34|Must be greater than 0|\n|limit|no|Number|2|Limit number of results per request|\n|skip|no|Number|2|Skip these many records and return next ones (Pagination)|\n|sortBy|no|String|createdAt:asc, name:desc|Sort results by name, email, age or createdAt|"
+					},
+					"response": []
+				}
+			],
+			"description": "## Authors API\n\n|Request Type|Endpoint|Description|\n|------------|--------|-----------|\n|`POST`|`/authors`|Sign-up or create new author account.|\n|`GET`|`/authors/me`|Retrieve currently logged in author profile details.|\n|`GET`|`/authors/books`|Get books owned by currently logged in author.|\n|`GET`|`/authors/:id`|Retrieve author profile details by author id.|\n|`POST`|`/authors/login`|Sign-in or login to author account.|\n|`PATCH`|`/authors/me`|Update profile data for currently logged in author.|\n|`DELETE`|`/authors/me`|Delete currently logged-in author's account.|\n|`POST`|`/authors/search`|Search for authors based off their name, age and email.|\n|`POST`|`/authors/logout`|Logout currently signed-in author.|\n|`POST`|`/authors/logoutAll`|Logout or clear all login sessions for currently logged in author account.|\n\n",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2b7ec732-cff1-439a-83ad-d53706e2d383",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "8e344517-156d-48db-b333-565b1d9dabbf",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Books",
+			"item": [
+				{
+					"name": "Create Book",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Book 4\",\n\t\"isbn\": 123456789,\n\t\"releaseDate\": \"2020-12-29\",\n\t\"author\": \"5f0d8f1eb09f8f45be004c05\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/books",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"books"
+							]
+						},
+						"description": "## Create/Add new book.\n\n|Field|Mandatory|Type|Example Value|Validations|\n|-----|---------|----|-------------|-----------|\n|title|yes|String|Some Book Name|Must be 1 to 50 Characters long|\n|isbn|yes|String|123456789|Must be numeric value between 9 to 11 digits long|\n|releaseDate|no|Date String (YYYY-MM-DD)|2020-12-29|Must be in format YYYY-MM-DD|\n|author|yes|String|5f0d8f1eb09f8f45be004c05|Must be a valid author id|"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Book By Id (Single)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/books/5f0d6d09183dc83e1d23aa40",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"books",
+								"5f0d6d09183dc83e1d23aa40"
+							]
+						},
+						"description": "## Retrieve book by book id.\n\nEndpoint: `/books/:id`\n\n|Field|Mandatory|Type|Description|\n|-----|---------|----|-----------|\n|:id|yes|Query String Param|Valid book id|"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Book",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Aditya test 1\",\n\t\"isbn\": 987654321,\n\t\"author\": \"5f0d8f1eb09f8f45be004c05\",\n\t\"releaseDate\": \"2019-12-28\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/books/5f0d6d09183dc83e1d23aa40",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"books",
+								"5f0d6d09183dc83e1d23aa40"
+							]
+						},
+						"description": "## Update book details.\n\n|Field|Mandatory|Type|Example Value|Validations|\n|-----|---------|----|-------------|-----------|\n|title|no|String|Some Book Name|Must be 1 to 50 Characters long|\n|isbn|no|String|123456789|Must be numeric value between 9 to 11 digits long|\n|releaseDate|no|Date String (YYYY-MM-DD)|2020-12-29|Must be in format YYYY-MM-DD|\n|author|no|String|5f0d8f1eb09f8f45be004c05|Must be a valid author id|"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Books",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"book\",\n\t\"isbn\": 987654321,\n\t\"author\": \"5f0d8f1eb09f8f45be004c05\",\n\t\"releaseDate\": \"2019-12-28\",\n\t\"limit\": 2,\n\t\"skip\": 2,\n\t\"sortBy\": \"title:asc\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/books/search",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"books",
+								"search"
+							]
+						},
+						"description": "## Search for books based off their title, isbn, author id, and releaseDate.\n\n|Field|Mandatory|Type|Example Value|Validations|\n|-----|---------|----|-------------|-----------|\n|title|no|String|Some Book Name|Must be 1 to 50 Characters long|\n|isbn|no|String|123456789|Must be numeric value between 9 to 11 digits long|\n|releaseDate|no|Date String (YYYY-MM-DD)|2020-12-29|Must be in format YYYY-MM-DD|\n|author|no|String|5f0d8f1eb09f8f45be004c05|Must be a valid author id|\n|limit|no|Number|2|Limit number of results per request|\n|skip|no|Number|2|Skip these many records and return next ones (Pagination)|\n|sortBy|no|String|createdAt:asc, title:desc|Sort results by title, isbn, releaseDate or createdAt|"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Book",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/books/5f0d8b3d472d2244dc71a2ec",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"books",
+								"5f0d8b3d472d2244dc71a2ec"
+							]
+						},
+						"description": "## Delete book by book id."
+					},
+					"response": []
+				},
+				{
+					"name": "My Books",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/books/me",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"books",
+								"me"
+							]
+						},
+						"description": "## Get books for the currently logged in author."
+					},
+					"response": []
+				}
+			],
+			"description": "## Books API\n\n|Request Type|Endpoint|Description|\n|------------|--------|-----------|\n|`POST`|`/books`|Create/Add new book.|\n|`POST`|`/books/search`|Search for books based off their title, isbn, author id, and releaseDate.|\n|`GET`|`/books/me`|Get books owned by currently logged in author.|\n|`GET`|`/books/:id`|Retrieve book by book id.|\n|`PATCH`|`/books/:id`|Update book details.|\n|`DELETE`|`/books/:id`|Delete book by book id.|",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a6d1f976-4b9f-49ec-af8b-c10d36204f7e",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "81d77d72-114f-4bf0-b6dc-63eb0c29b0f1",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{JWT_TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "507fe0a2-f4f0-48f3-b660-709a52dc9786",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "b621e99b-5a9b-4677-a999-65f032c0a1c5",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -4,3 +4,4 @@ Dockerfile
 wait-for.sh
 env/*.*
 dbdata/*.*
+postman/*.*
