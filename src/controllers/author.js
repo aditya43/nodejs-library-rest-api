@@ -42,3 +42,25 @@ exports.myBooks = async (req, res) => {
         res.status(500).send(e);
     }
 };
+
+/**
+ * Get author by id
+ */
+exports.get = async (req, res) => {
+    try {
+        const _id = req.params.id;
+
+        const author = await Author.findById(_id);
+
+        if (!author) {
+            return res.status(404).send({
+                code: 404,
+                message: 'Author not found'
+            });
+        }
+
+        res.status(200).send(author);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+};
