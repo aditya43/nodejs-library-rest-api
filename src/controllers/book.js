@@ -172,3 +172,39 @@ exports.get = async (req, res) => {
         res.status(500).send(e);
     }
 };
+
+/**
+ * Update book owned by currently logged in author
+ */
+exports.update = async (req, res) => {
+    const parameters = Object.keys(req.body);
+    const allowedUpdates = ['title', 'isbn', 'author', 'releaseDate'];
+
+    const isParamAllowedToUpdated = parameters.every(param => allowedUpdates.includes(param));
+
+    if (!isParamAllowedToUpdated) {
+        return res.status(400).send({ error: 'Invalid update field' });
+    }
+
+    try {
+        // If we use findByIdAndUpdate(), Mongoose middleware won't be executed.
+        const book = await Book.findOne({
+            _id: req.params.id,
+            author: req.author.id
+        }).populate('author');
+
+        if (!book) {
+            res.status(404).send({ error: 'Book not found!' });
+        }
+
+        parameters.forEach(param => {
+            book[param] = req.body[param];
+        });
+
+        await book.save();
+
+        res.status(200).send(book);
+    } catch (e) {
+        res.status(400).send(e);
+    }
+};
