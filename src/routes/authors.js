@@ -74,6 +74,16 @@ authorSchema.methods.generateJwtAuthToken = async function () {
     return token;
 };
 
+// To remove 'password' and 'tokens' data from 'author' object when returned.
+authorSchema.methods.toJSON = function () {
+    const author = this.toObject();
+
+    delete author.password;
+    delete author.tokens;
+
+    return author;
+};
+
 const Author = mongoose.model('Author', authorSchema);
 
 module.exports = Author;
