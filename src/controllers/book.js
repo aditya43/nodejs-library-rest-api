@@ -91,3 +91,65 @@ exports.myBooks = async (req, res) => {
         res.status(500).send(e);
     }
 };
+
+/**
+ * Search books
+ */
+exports.search = async (req, res) => {
+    try {
+        const sort = {};
+        const criteria = {};
+
+        if (req.body.sortBy) {
+            const sortByParts = req.body.sortBy.split(':');
+            sort[sortByParts[0]] = sortByParts[1] === 'asc' ? 1 : -1;
+        }
+
+        const limit = req.body.limit || 10;
+        const skip = req.body.skip || 0;
+
+        delete req.body.limit;
+        delete req.body.skip;
+        delete req.body.sortBy;
+
+        const parameters = Object.keys(req.body);
+        const allowedSearch = ['title', 'isbn', 'releaseDate', 'author'];
+        const isParamAllowedToSearch = parameters.every(param => allowedSearch.includes(param));
+
+        if (!isParamAllowedToSearch) {
+            return res.status(400).send({ error: 'Invalid search fields' });
+        }
+
+        if (req.body.title) {
+            criteria.title = new RegExp(req.body.title, 'i');
+        }
+
+        if (req.body.isbn) {
+            criteria.isbn = req.body.isbn;
+        }
+
+        if (req.body.releaseDate) {
+            criteria.releaseDate = req.body.releaseDate;
+        }
+
+        if (req.body.author) {
+            criteria.author = req.body.author;
+        }
+        const books = await Book.find(criteria, null, {
+            limit: parseInt(limit),
+            skip: parseInt(skip),
+            sort
+        }).populate('author');
+
+        if (books.length === 0) {
+            return res.status(404).send({
+                code: 400,
+                error: '0 Books found!'
+            });
+        }
+
+        res.status(200).send(books);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+};
