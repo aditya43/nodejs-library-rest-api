@@ -46,3 +46,17 @@ test('should signup a new author', async () => {
     // Assert that the plain text password is not stored in database.
     expect(author.password).not.toBe('aditya123!');
 });
+
+test('should login existing author', async () => {
+    const response = await request(app)
+        .post('/authors/login')
+        .send({
+            email: authorOne.email,
+            password: authorOne.password
+        })
+        .expect(200);
+
+    // Assert that the JWT Token stored in database is same as the one received in post login response.
+    const author = await Author.findById(response.body.author._id);
+    expect(response.body.jwtToken).toBe(author.tokens[1].token);
+});
