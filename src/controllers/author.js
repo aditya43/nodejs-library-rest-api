@@ -64,3 +64,29 @@ exports.get = async (req, res) => {
         res.status(500).send(e);
     }
 };
+
+/**
+ * Update profile for currently logged in author
+ */
+exports.update = async (req, res) => {
+    const parameters = Object.keys(req.body);
+    const allowedUpdates = ['name', 'email', 'password', 'age'];
+    const isParamAllowedToUpdated = parameters.every(param => allowedUpdates.includes(param));
+
+    if (!isParamAllowedToUpdated) {
+        return res.status(400).send({ error: 'Invalid update field' });
+    }
+
+    try {
+        // If we use findByIdAndUpdate(), Mongoose middleware won't be executed.
+        parameters.forEach((param) => {
+            req.author[param] = req.body[param];
+        });
+
+        await req.author.save();
+
+        return res.status(200).send(req.author);
+    } catch (e) {
+        res.status(400).send(e);
+    }
+};
