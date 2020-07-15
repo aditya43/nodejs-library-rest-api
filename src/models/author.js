@@ -41,7 +41,6 @@ const authorSchema = new mongoose.Schema({
         required: true,
         trim: true,
         minlength: 7,
-        maxlength: 30,
         validate (value) {
             if (value.toLowerCase().includes('password')) {
                 throw new Error(`Password cannot contain the word 'password'`);

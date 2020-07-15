@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
 
 const bookSchema = new mongoose.Schema({
     title: {
@@ -17,7 +16,7 @@ const bookSchema = new mongoose.Schema({
                 throw new Error('ISBN must be positive number');
             }
 
-            if (!validator.isLength(value, { min: 9, max: 11 })) {
+            if (value.toString().length < 9 || value.toString().length > 11) {
                 throw new Error('ISBN number must be 9 to 11 digits long');
             }
         }
@@ -31,7 +30,7 @@ const bookSchema = new mongoose.Schema({
     releaseDate: {
         type: Date,
         validate (value) {
-            if (!validator.isDate(value, 'YYYY-MM-DD')) {
+            if (isNaN(Date.parse(value))) {
                 throw new Error('Invalid release date. Correct format: YYYY-MM-DD');
             }
         }
