@@ -6,7 +6,7 @@ const helmet = require('helmet');
 
 const morganLogger = require('./middleware/morganLogger');
 const authorRoutes = require('./routes/authors');
-// const bookRoutes = require('./routes/books');
+const bookRoutes = require('./routes/books');
 
 const app = express();
 app.use(helmet());
@@ -16,6 +16,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(authorRoutes);
-// app.use(bookRoutes);
+app.use(bookRoutes);
 
 module.exports = app;
