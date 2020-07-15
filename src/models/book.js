@@ -5,6 +5,8 @@ const bookSchema = new mongoose.Schema({
     title: {
         type: String,
         trim: true,
+        minlength: 1,
+        maxlength: 50,
         required: true
     },
     isbn: {
@@ -27,7 +29,12 @@ const bookSchema = new mongoose.Schema({
         required: true
     },
     releaseDate: {
-        type: Date
+        type: Date,
+        validate (value) {
+            if (!validator.isDate(value, 'YYYY-MM-DD')) {
+                throw new Error('Invalid release date. Correct format: YYYY-MM-DD');
+            }
+        }
     }
 }, {
     timestamps: true

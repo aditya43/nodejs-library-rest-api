@@ -8,6 +8,8 @@ const Book = require('../models/book');
 const authorSchema = new mongoose.Schema({
     name: {
         type: String,
+        minlength: 1,
+        maxlength: 30,
         required: true,
         trim: true
     },
@@ -25,6 +27,8 @@ const authorSchema = new mongoose.Schema({
         required: true,
         unique: true,
         trim: true,
+        minlength: 1,
+        maxlength: 50,
         lowercase: true,
         validate (value) {
             if (!validator.isEmail(value)) {
@@ -37,6 +41,7 @@ const authorSchema = new mongoose.Schema({
         required: true,
         trim: true,
         minlength: 7,
+        maxlength: 30,
         validate (value) {
             if (value.toLowerCase().includes('password')) {
                 throw new Error(`Password cannot contain the word 'password'`);
