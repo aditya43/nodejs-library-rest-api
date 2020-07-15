@@ -9,7 +9,32 @@ const Author = require('../models/author');
  * @param {String} authorId
  */
 const authorExists = async authorId => {
-    //
+    try {
+        const author = await Author.findOne({
+            _id: authorId
+        });
+
+        if (!author) {
+            return {
+                code: 401,
+                message: 'Author does not exist'
+            };
+        }
+
+        return { code: 200 };
+    } catch (e) {
+        if (e.kind === 'ObjectId') {
+            return {
+                code: 401,
+                message: 'Invalid author id'
+            };
+        }
+        return {
+            code: 500,
+            message: 'Something went wrong',
+            error: e
+        };
+    }
 };
 
 /**
