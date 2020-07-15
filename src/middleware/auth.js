@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
 const Author = require('../models/author');
 
+/**
+ * Middleware to authenticate author
+ */
 const auth = async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '');
