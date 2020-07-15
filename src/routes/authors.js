@@ -84,6 +84,23 @@ authorSchema.methods.toJSON = function () {
     return author;
 };
 
+// statics = 'findByCredentials' method will be accessible for calling on 'Author' model itself.
+authorSchema.statics.findByCredentials = async (email, password) => {
+    const author = await Author.findOne({ email });
+
+    if (!author) {
+        throw new Error('Invalid credentials'); // Author not found for given email
+    }
+
+    const isPasswordMatch = await bcrypt.compare(password, author.password);
+
+    if (!isPasswordMatch) {
+        throw new Error('Invalid credentials'); // Password doesn't match
+    }
+
+    return author;
+};
+
 const Author = mongoose.model('Author', authorSchema);
 
 module.exports = Author;
