@@ -152,3 +152,62 @@ exports.logoutAll = async (req, res) => {
         res.status(500).send();
     }
 };
+
+/**
+ * Search authors
+ */
+exports.search = async (req, res) => {
+    try {
+        const sort = {};
+        const criteria = {};
+
+        if (req.body.sortBy) {
+            const sortByParts = req.body.sortBy.split(':');
+            sort[sortByParts[0]] = sortByParts[1] === 'asc' ? 1 : -1;
+        }
+
+        const limit = req.body.limit || 10;
+        const skip = req.body.skip || 0;
+
+        delete req.body.limit;
+        delete req.body.skip;
+        delete req.body.sortBy;
+
+        const parameters = Object.keys(req.body);
+        const allowedSearch = ['name', 'age', 'email'];
+        const isParamAllowedToSearch = parameters.every(param => allowedSearch.includes(param));
+
+        if (!isParamAllowedToSearch) {
+            return res.status(400).send({ error: 'Invalid search fields' });
+        }
+
+        if (req.body.name) {
+            criteria.name = new RegExp(req.body.name, 'i');
+        }
+
+        if (req.body.age) {
+            criteria.age = req.body.age;
+        }
+
+        if (req.body.email) {
+            criteria.email = req.body.email;
+        }
+
+        const authors = await Author.find(criteria, null, {
+            limit: parseInt(limit),
+            skip: parseInt(skip),
+            sort
+        }).populate('books');
+
+        if (authors.length === 0) {
+            return res.status(404).send({
+                code: 400,
+                error: '0 Authors found!'
+            });
+        }
+
+        res.status(200).send(authors);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+};
