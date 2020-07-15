@@ -12,7 +12,7 @@ router.post('/books/search', authMiddleware, bookController.search);
 // GET /books?sortBy=createdAt:desc
 // GET /books?sortBy=releaseDate:asc
 // GET /books?sortBy=releaseDate:desc
-// router.get('/books/me', authMiddleware, bookController.myBooks);
+router.get('/books/me', authMiddleware, bookController.myBooks);
 
 // router.get('/books/:id', authMiddleware, bookController.get);
 // router.patch('/books/:id', authMiddleware, bookController.update);
