@@ -102,3 +102,17 @@ exports.delete = async (req, res) => {
         res.status(400).send(e);
     }
 };
+
+/**
+ * Author login
+ */
+exports.login = async (req, res) => {
+    try {
+        const author = await Author.findByCredentials(req.body.email, req.body.password);
+        const jwtToken = await author.generateJwtAuthToken();
+
+        res.status(200).send({ author, jwtToken });
+    } catch (e) {
+        res.status(400).send({ error: 'Invalid credentials' });
+    }
+};
