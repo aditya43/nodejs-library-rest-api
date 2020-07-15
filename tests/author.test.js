@@ -9,3 +9,14 @@ const {
 } = require('./fixtures/db');
 
 beforeEach(populateDatabase);
+
+test('should not allow password to contain word password', async () => {
+    await request(app)
+        .post('/authors')
+        .send({
+            name: 'Aditya Hajare',
+            email: 'aditya.hajare@example.com',
+            password: 'mypassword'
+        })
+        .expect(400);
+});
