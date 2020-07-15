@@ -78,3 +78,10 @@ test('should get profile for the logged in author', async () => {
         .send()
         .expect(200);
 });
+
+test('should not get profile for the unauthenticated request', async () => {
+    await request(app)
+        .get('/authors/me')
+        .send()
+        .expect(401);
+});
