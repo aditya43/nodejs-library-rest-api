@@ -116,3 +116,23 @@ exports.login = async (req, res) => {
         res.status(400).send({ error: 'Invalid credentials' });
     }
 };
+
+/**
+ * Logout author
+ */
+exports.logout = async (req, res) => {
+    try {
+        req.author.tokens = req.author.tokens.filter(token => {
+            return token.token !== req.token;
+        });
+
+        await req.author.save();
+
+        res.status(200).send({
+            code: 200,
+            message: 'success'
+        });
+    } catch (error) {
+        res.status(500).send();
+    }
+};
