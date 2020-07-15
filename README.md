@@ -51,4 +51,8 @@ Library REST API using Node, Express, MongoDB, Mongoose, Docker Containers.
 |`GET`|`/books/:id`|Retrieve book by book id.|
 |`PATCH`|`/books/:id`|Update book details.|
 |`DELETE`|`/books/:id`|Delete book by book id.|
+
 -----------
+
+## Test Results
+![Test Results](/screens/test-results.jpg)
