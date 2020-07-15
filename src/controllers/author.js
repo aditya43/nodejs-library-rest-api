@@ -50,3 +50,19 @@ exports.logout = async (req, res) => {
         res.status(500).send();
     }
 };
+
+/**
+ * Logout all sessions
+ */
+exports.logoutAll = async (req, res) => {
+    try {
+        req.author.tokens = [];
+        await req.author.save();
+        res.status(200).send({
+            code: 200,
+            message: 'success'
+        });
+    } catch (error) {
+        res.status(500).send();
+    }
+};
