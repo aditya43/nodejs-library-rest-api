@@ -6,7 +6,7 @@ const router = new express.Router();
 
 router.post('/authors', authorController.add);
 router.get('/authors/me', authMiddleware, authorController.myProfile);
-// router.get('/authors/books', authMiddleware, authorController.myBooks);
+router.get('/authors/books', authMiddleware, authorController.myBooks);
 // router.get('/authors/:id', authorController.get);
 router.post('/authors/login', authorController.login);
 // router.patch('/authors/me', authMiddleware, authorController.update);
