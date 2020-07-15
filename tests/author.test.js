@@ -164,3 +164,10 @@ test('should get author by id', async () => {
         .set('Authorization', `Bearer ${authorOne.tokens[0].token}`)
         .expect(200);
 });
+
+test('should not get author for non-existent id', async () => {
+    await request(app)
+        .get(`/authors/99999999999999999`)
+        .set('Authorization', `Bearer ${authorOne.tokens[0].token}`)
+        .expect(500);
+});
