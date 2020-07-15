@@ -14,7 +14,7 @@ router.post('/books/search', authMiddleware, bookController.search);
 // GET /books?sortBy=releaseDate:desc
 router.get('/books/me', authMiddleware, bookController.myBooks);
 
-// router.get('/books/:id', authMiddleware, bookController.get);
+router.get('/books/:id', authMiddleware, bookController.get);
 // router.patch('/books/:id', authMiddleware, bookController.update);
 // router.delete('/books/:id', authMiddleware, bookController.delete);
 
