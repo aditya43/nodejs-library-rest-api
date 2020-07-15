@@ -15,7 +15,7 @@ services:
       - MONGO_PORT=27017
       - MONGO_DB=library_rest_api
     ports:
-      - "3000:8080"
+      - "8080:8080"
     volumes:
       - .:/usr/src/app
       - node_modules:/usr/src/app/node_modules
