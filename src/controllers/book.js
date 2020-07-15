@@ -62,3 +62,32 @@ exports.add = async (req, res) => {
         res.status(400).send(e);
     }
 };
+
+/**
+ * Get books associated with currently logged in author
+ */
+exports.myBooks = async (req, res) => {
+    const sort = {};
+
+    if (req.query.sortBy) {
+        const sortByParts = req.query.sortBy.split(':');
+        sort[sortByParts[0]] = sortByParts[1] === 'asc' ? 1 : -1;
+    }
+
+    try {
+        const limit = req.query.limit || 10;
+        const skip = req.query.skip || 0;
+
+        await req.author.populate({
+            path: 'books',
+            options: {
+                limit: parseInt(limit),
+                skip: parseInt(skip),
+                sort
+            }
+        }).execPopulate();
+        res.status(200).send(req.author.books);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+};
