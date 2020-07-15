@@ -27,3 +27,18 @@ exports.myProfile = async (req, res) => {
         res.status(500).send(e);
     }
 };
+
+/**
+ * Get books for currently logged in author
+ */
+exports.myBooks = async (req, res) => {
+    try {
+        await req.author.populate({
+            path: 'books'
+        }).execPopulate();
+
+        res.status(200).send(req.author.books);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+};
