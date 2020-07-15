@@ -93,3 +93,10 @@ test('should get books for the logged in author', async () => {
         .send()
         .expect(200);
 });
+
+test('should not get books for the unauthenticated request', async () => {
+    await request(app)
+        .get('/authors/books')
+        .send()
+        .expect(401);
+});
