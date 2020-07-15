@@ -47,3 +47,17 @@ test('should not delete other authors book', async () => {
     const book = await Book.findById(bookOne._id);
     expect(book).not.toBeNull();
 });
+
+test('should search and return valid books', async () => {
+    const response = await request(app)
+        .post('/books/search')
+        .set('Authorization', `Bearer ${authorOne.tokens[0].token}`)
+        .send({
+            title: 'BoOk',
+            limit: 1
+        })
+        .expect(200);
+
+    expect(response.body.length).toBe(1);
+    expect(response.body[0].isbn).toBe(123456789);
+});
