@@ -90,3 +90,15 @@ exports.update = async (req, res) => {
         res.status(400).send(e);
     }
 };
+
+/**
+ * Delete currently logged in author's account
+ */
+exports.delete = async (req, res) => {
+    try {
+        await req.author.remove();
+        res.status(200).send(req.author);
+    } catch (e) {
+        res.status(400).send(e);
+    }
+};
